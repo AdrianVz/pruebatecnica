@@ -31,11 +31,25 @@ public class EventoServiceImpl implements EventoService {
     @Autowired
     private BoletoRepository boletoRepository;
 
+    /**
+     * Crea un nuevo evento después de validar sus datos.
+     *
+     * @param evento el evento a crear
+     * @return el evento creado
+     * @throws EventoException si los datos del evento no son válidos
+     */
     public Evento crearEvento(Evento evento) {
         validarEvento(evento);
         return eventoRepository.save(evento);
     }
 
+    /**
+     * Actualiza los detalles de un evento existente.
+     *
+     * @param id el ID del evento a actualizar
+     * @param detallesEvento los nuevos detalles del evento
+     * @return una respuesta HTTP indicando el resultado de la operación
+     */
     public ResponseEntity<String> actualizarEvento(Long id, Evento detallesEvento) {
         try {
             Evento evento = eventoRepository.findById(id)
@@ -55,6 +69,12 @@ public class EventoServiceImpl implements EventoService {
         }
     }
 
+    /**
+     * Elimina un evento si cumple con las condiciones necesarias.
+     *
+     * @param id el ID del evento a eliminar
+     * @return una respuesta HTTP indicando el resultado de la operación
+     */
     public ResponseEntity<String> eliminarEvento(Long id) {
         try {
             Evento evento = eventoRepository.findById(id)
@@ -77,6 +97,12 @@ public class EventoServiceImpl implements EventoService {
         }
     }
 
+    /**
+     * Vende un boleto para un evento específico.
+     *
+     * @param eventoId el ID del evento para el cual se vende el boleto
+     * @return un objeto InfoBoletoDTO con la información del boleto vendido
+     */
     public InfoBoletoDTO venderBoleto(Long eventoId) {
         try {
             Evento evento = eventoRepository.findById(eventoId)
@@ -105,6 +131,12 @@ public class EventoServiceImpl implements EventoService {
         }
     }
 
+    /**
+     * Canjea un boleto utilizando su código.
+     *
+     * @param codigoBoleto el código del boleto a canjear
+     * @return una respuesta HTTP indicando el resultado de la operación
+     */
     public ResponseEntity<String> canjearBoleto(String codigoBoleto) {
         try {
             Boleto boleto = boletoRepository.findByCodigoBoleto(codigoBoleto)
@@ -131,6 +163,12 @@ public class EventoServiceImpl implements EventoService {
         }
     }
 
+    /**
+     * Obtiene los detalles de un evento específico.
+     *
+     * @param eventoId el ID del evento
+     * @return un objeto DetalleEventoDTO con los detalles del evento
+     */
     public DetalleEventoDTO obtenerDetalleEvento(Long eventoId) {
         Evento evento = eventoRepository.findById(eventoId)
                 .orElseThrow(() -> new EntityNotFoundException("Evento no encontrado"));
@@ -147,6 +185,12 @@ public class EventoServiceImpl implements EventoService {
         return detalleEventoDTO;
     }
 
+    /**
+     * Valida los datos de un evento.
+     *
+     * @param evento el evento a validar
+     * @throws EventoException si los datos del evento no son válidos
+     */
     private void validarEvento(Evento evento) {
         if (evento.getFechaInicio().isBefore(LocalDateTime.now())) {
             throw new EventoException("La fecha de inicio no puede ser en el pasado");
@@ -159,6 +203,13 @@ public class EventoServiceImpl implements EventoService {
         }
     }
 
+    /**
+     * Valida los datos de actualización de un evento.
+     *
+     * @param eventoExistente el evento existente
+     * @param eventoActualizado los nuevos datos del evento
+     * @throws EventoException si los datos de actualización no son válidos
+     */
     private void validarActualizacionEvento(Evento eventoExistente, Evento eventoActualizado) {
         validarEvento(eventoActualizado);
 
@@ -169,6 +220,11 @@ public class EventoServiceImpl implements EventoService {
         }
     }
 
+    /**
+     * Genera un código único para un boleto.
+     *
+     * @return un código de boleto único
+     */
     private String generarCodigoBoleto() {
         return UUID.randomUUID().toString();
     }
