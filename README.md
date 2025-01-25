@@ -62,3 +62,8 @@ Salida Ejemplo:
 Script de base de datos:
 
 Ver script completo: [script.sql](/src/main/resources/Backup.sql)
+
+### Diagrama entidad relación
+
+<img width="614" alt="image" src="https://github.com/user-attachments/assets/47e834ab-4ec4-44f3-aa3a-08e66206c56d" />
+
