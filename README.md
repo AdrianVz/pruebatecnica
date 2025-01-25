@@ -61,4 +61,4 @@ Salida Ejemplo:
 ### Base de Datos
 Script de base de datos:
 
-Ver script completo: [script.sql](/pruebatecnica/src/main/resources/Backup.sql)
+Ver script completo: [script.sql](/src/main/resources/Backup.sql)
